@@ -1,37 +1,23 @@
-/**
- * Created by KoalaHui on 2017/5/13 0013.
- */
-function makeAction(type) {
-  return ({ dispatch }, ...args) => dispatch(type, ...args);
+export const addNote = ({commit}) => {
+  commit('ADD_NOTE');
 };
 
-const initNote = {
-  id: +new Date(),
-  title: '我的笔记',
-  content: '第一篇笔记内容',
-  favorite: false
+export const editNoteTitle = ({commit}, e) => {
+  commit('EDIT_NOTE_TITLE', e.target.value);
 };
 
-// 模拟初始化数据
-const initData = {
-  show: 'all',
-  notes: [initNote],
-  activeNote: initNote
+export const editNoteText = ({commit}, e) => {
+  commit('EDIT_NOTE_TEXT', e.target.value);
 };
 
-export const initStore = ({ dispatch }) => {
-  dispatch('INIT_STORE', initData);
+export const deleteNote = ({commit}) => {
+  commit('DELETE_NOTE');
 };
-// 更新当前activeNote对象
-export const updateActiveNote = makeAction('SET_ACTIVE_NOTE');
 
-// 添加一个note对象
-export const newNote = makeAction('NEW_NOTE');
+export const updateActiveNote = ({commit}, note) => {
+  commit('SET_ACTIVE_NOTE', note);
+};
 
-// 删除一个note对象
-export const deleteNote = makeAction('DELETE_NOTE');
-export const toggleFavorite = makeAction('TOGGLE_FAVORITE');
-export const editNote = makeAction('EDIT_NOTE');
-
-// 更新列表展示
-export const updateShow = makeAction('SET_SHOW_ALL');
+export const toggleFavorite = ({commit}) => {
+  commit('TOGGLE_FAVORITE');
+};

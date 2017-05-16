@@ -1,25 +1,27 @@
 <template>
   <div id="notes-list">
     <div id="list-header">
-      <h2>Notes | heavenru.com</h2>
+      <h2>Notes | koala</h2>
       <div class="btn-group btn-group-justified" role="group">
-        <!-- all -->
+        <!-- All Notes button -->
         <div class="btn-group" role="group">
           <button type="button" class="btn btn-default"
-                  @click="toggleShow('all')"
-                  :class="{active: show === 'all'}">All Notes</button>
+                  @click="show = 'all'"
+                  :class="{active: show === 'all'}">
+            All Notes
+          </button>
         </div>
-
-        <!-- favorites -->
+        <!-- Favorites Button -->
         <div class="btn-group" role="group">
           <button type="button" class="btn btn-default"
-                  @click="toggleShow('favorite')"
-                  :class="{active: show === 'favorite'}">Favorites</button>
+                  @click="show = 'favorites'"
+                  :class="{active: show === 'favorites'}">
+            Favorites
+          </button>
         </div>
       </div>
     </div>
-
-    <!-- 渲染笔记列表 -->
+    <!-- render notes in a list -->
     <div class="container">
       <div class="list-group">
         <a v-for="note in filteredNotes"
@@ -27,34 +29,36 @@
            :class="{active: activeNote === note}"
            @click="updateActiveNote(note)">
           <h4 class="list-group-item-heading">
-            {{note.title.trim().substring(0,30)}}
+            {{note.title.trim().substring(0, 30)}}
           </h4>
         </a>
       </div>
     </div>
+
   </div>
 </template>
 
-<script>
-  import { updateActiveNote, updateShow } from '../vuex/actions';
-  import { show, filteredNotes, activeNote } from '../vuex/getters';
+<script type="text/ecmascript-6">
+  import {mapGetters, mapActions} from 'vuex';
 
   export default {
-    vuex: {
-      getters: {
-        show,
-        filteredNotes,
-        activeNote
+    data () {
+      return {
+        show: 'all'
+      };
+    },
+    computed: {
+      filteredNotes: function () {
+        if (this.show === 'all') {
+          return this.$store.state.notes;
+        } else if (this.show === 'favorites') {
+          return this.$store.state.notes.filter(note => note.favorite);
+        }
       },
-      actions: {
-        updateActiveNote,
-        updateShow
-      }
+      ...mapGetters(['activeNote'])
     },
     methods: {
-      toggleShow(show) {
-        this.updateShow(show);
-      }
+      ...mapActions(['updateActiveNote'])
     }
   };
 </script>
